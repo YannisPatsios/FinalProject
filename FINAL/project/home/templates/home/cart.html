@@ -1,0 +1,31 @@
+{% extends 'home/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="display-4 mb-4">Your Cart</h1>
+    
+    {% if cart_items %}
+        <div class="row">
+            {% for item in cart_items %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{ item.property.image.url }}" alt="{{ item.property.name }}" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.property.name }}</h5>
+                            <p class="card-text">{{ item.property.description }}</p>
+                            <p class="card-text">Price: {{ item.property.price }}€</p>
+                            <!-- <p class="card-text">Rating: {{ item.rating }}</p> I will add rating later on-->
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-outline-dark" href="{% url 'home:remove_from_cart' item.property.id %}">Remove from Cart</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

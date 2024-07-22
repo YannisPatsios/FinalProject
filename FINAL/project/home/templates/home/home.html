@@ -1,0 +1,98 @@
+{% extends 'home/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Product section -->
+    {% with item=properties.0 %}
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    <img class="card-img-top mb-5 mb-md-0" src="{{ item.image.url }}" alt="{{ item.name }}" />
+                </div>
+                <div class="col-md-6">
+                    <div class="small mb-1">Top Recommended Pick:</div>
+                    <h1 class="display-5 fw-bolder">{{ item.name }}!</h1>
+                    <p class="lead">{{ item.description }}</p>
+                    <div class="d-flex">
+                        <form method="post" action="{% url 'home:add_to_cart' item.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                                <i class="bi-cart-fill me-1"></i>
+                                Add to cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endwith %}
+        
+    <!-- Related properties section -->
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related Properties</h2>
+            <!-- Search Bar -->
+            <div class="row mb-4">
+                <div class="col-md-6 mx-auto">
+                    <form method="get" action="{% url 'home:home' %}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="q" placeholder="Search for properties..." value="{{ query }}">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                {% for item in properties %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image -->
+                        <img class="card-img-top" src="{{ item.image.url }}" alt="{{ item.name }}" />
+                        <!-- Product details -->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name -->
+                                <h5 class="fw-bolder">{{ item.name }}</h5>
+                                <!-- Product price -->
+                                {{ item.price }}
+                            </div>
+                        </div>
+                        <!-- Product actions -->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <form method="post" action="{% url 'home:add_to_cart' item.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-dark mt-auto" type="submit">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About section -->
+    <section class="py-5" id="about">
+        <div class="container px-4 px-lg-5">
+            <h2 class="fw-bolder mb-4">About Us</h2>
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    <img class="img-fluid rounded mb-5 mb-md-0" src="{% static 'images/niko.jpg' %}" alt="About us image" />
+                </div>
+                <div class="col-md-6">
+                    <p class="lead">Welcome to our website! We are dedicated to providing you with the best products and services. Our goal is to offer quality and satisfaction to our customers.</p>
+                    <p>Founded in 2021, our company has grown rapidly and is committed to excellence. We believe in innovation, creativity, and the power of a satisfied customer base. Our team works tirelessly to bring you the latest and greatest in our industry.</p>
+                    <p>Thank you for choosing us! We look forward to serving you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
